@@ -47,6 +47,7 @@ app.get('/api/test', (req, res) => {
 // Routes will be added here phase by phase
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/groups', require('./routes/groupRoutes'));
 
 // --------------- Error Handler ---------------
 // Must be AFTER all routes
