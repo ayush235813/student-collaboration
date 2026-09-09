@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const ApiError = require('../utils/apiError');
 
 // Middleware to protect routes — verifies JWT token
-// Full implementation in Phase 2 (Authentication)
 const protect = async (req, res, next) => {
   let token;
 
@@ -17,17 +18,19 @@ const protect = async (req, res, next) => {
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // TODO: Attach user to request object (Phase 2)
-      // req.user = await User.findById(decoded.id).select('-password');
+      // Fetch user from DB and attach to request object (excluding password)
+      req.user = await User.findById(decoded.id).select('-password');
+      
+      if (!req.user) {
+        return next(new ApiError(401, 'Not authorized, user not found'));
+      }
 
       next();
     } catch (error) {
-      res.status(401).json({ success: false, message: 'Not authorized, token failed' });
+      return next(new ApiError(401, 'Not authorized, token failed or expired'));
     }
-  }
-
-  if (!token) {
-    res.status(401).json({ success: false, message: 'Not authorized, no token provided' });
+  } else {
+    return next(new ApiError(401, 'Not authorized, no token provided'));
   }
 };
 
