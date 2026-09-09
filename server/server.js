@@ -45,7 +45,8 @@ app.get('/api/test', (req, res) => {
 
 // --------------- API Routes ---------------
 // Routes will be added here phase by phase
-// Example: app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 
 // --------------- Error Handler ---------------
 // Must be AFTER all routes
