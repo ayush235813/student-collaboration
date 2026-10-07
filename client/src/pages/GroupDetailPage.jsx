@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getGroupById, joinGroup, leaveGroup, updateGroup, deleteGroup } from '../api/groupApi';
 import { getGroupTasks, createTask, updateTask, deleteTask } from '../api/taskApi';
+import { getGroupResources, createResource, updateResource, deleteResource } from '../api/resourceApi';
 import useAuth from '../hooks/useAuth';
 import TaskCard from '../components/tasks/TaskCard';
 import TaskForm from '../components/tasks/TaskForm';
+import ResourceCard from '../components/resources/ResourceCard';
+import ResourceForm from '../components/resources/ResourceForm';
 
 const GroupDetailPage = () => {
   const { id } = useParams();
@@ -26,8 +29,16 @@ const GroupDetailPage = () => {
   const [tasksLoading, setTasksLoading] = useState(false);
   const [taskError, setTaskError] = useState('');
   const [showTaskForm, setShowTaskForm] = useState(false);
-  const [editingTask, setEditingTask] = useState(null); // task being edited, null = create mode
+  const [editingTask, setEditingTask] = useState(null);
   const [taskSubmitting, setTaskSubmitting] = useState(false);
+
+  // Resource state
+  const [resources, setResources] = useState([]);
+  const [resourcesLoading, setResourcesLoading] = useState(false);
+  const [resourceError, setResourceError] = useState('');
+  const [showResourceForm, setShowResourceForm] = useState(false);
+  const [editingResource, setEditingResource] = useState(null);
+  const [resourceSubmitting, setResourceSubmitting] = useState(false);
 
   const fetchGroup = async () => {
     try {
@@ -50,12 +61,22 @@ const GroupDetailPage = () => {
       setTasks(data.tasks);
       setTaskError('');
     } catch (err) {
-      // If user isn't a member, they can't see tasks — that's expected
-      if (err.response?.status !== 403) {
-        setTaskError(err.response?.data?.message || 'Failed to fetch tasks.');
-      }
+      if (err.response?.status !== 403) setTaskError(err.response?.data?.message || 'Failed to fetch tasks.');
     } finally {
       setTasksLoading(false);
+    }
+  };
+
+  const fetchResources = async () => {
+    try {
+      setResourcesLoading(true);
+      const data = await getGroupResources(id);
+      setResources(data.resources);
+      setResourceError('');
+    } catch (err) {
+      if (err.response?.status !== 403) setResourceError(err.response?.data?.message || 'Failed to fetch resources.');
+    } finally {
+      setResourcesLoading(false);
     }
   };
 
@@ -63,9 +84,11 @@ const GroupDetailPage = () => {
     fetchGroup();
   }, [id]);
 
-  // Fetch tasks once we know the group (so we know membership)
   useEffect(() => {
-    if (group) fetchTasks();
+    if (group) {
+      fetchTasks();
+      fetchResources();
+    }
   }, [group]);
 
   // ---- Group Actions ----
@@ -175,6 +198,44 @@ const GroupDetailPage = () => {
       setSuccessMessage('Task deleted.');
     } catch (err) {
       setTaskError(err.response?.data?.message || 'Failed to delete task.');
+    }
+  };
+
+  // ---- Resource Actions ----
+  const handleResourceSubmit = async (formData) => {
+    try {
+      setResourceSubmitting(true);
+      setResourceError('');
+      if (editingResource) {
+        await updateResource(editingResource._id, formData);
+        setSuccessMessage('Resource updated successfully.');
+      } else {
+        await createResource({ ...formData, groupId: id });
+        setSuccessMessage('Resource shared successfully.');
+      }
+      setShowResourceForm(false);
+      setEditingResource(null);
+      fetchResources();
+    } catch (err) {
+      setResourceError(err.response?.data?.message || 'Failed to save resource.');
+    } finally {
+      setResourceSubmitting(false);
+    }
+  };
+
+  const handleEditResource = (resource) => {
+    setEditingResource(resource);
+    setShowResourceForm(true);
+  };
+
+  const handleDeleteResource = async (resourceId) => {
+    if (!window.confirm('Are you sure you want to delete this resource?')) return;
+    try {
+      await deleteResource(resourceId);
+      setResources((prev) => prev.filter((r) => r._id !== resourceId));
+      setSuccessMessage('Resource deleted.');
+    } catch (err) {
+      setResourceError(err.response?.data?.message || 'Failed to delete resource.');
     }
   };
 
@@ -396,6 +457,85 @@ const GroupDetailPage = () => {
                 {isAdmin && (
                   <p className="text-xs text-gray-400">Click "+ Add Task" to create the first task.</p>
                 )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ---- Study Resources Section (only for members) ---- */}
+      {isMember && (
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg mt-8">
+          <div className="px-4 py-5 sm:px-6 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h4 className="text-lg font-medium text-gray-900">
+                Study Resources
+                <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                  {resources.length}
+                </span>
+              </h4>
+              <p className="text-xs text-gray-500 mt-1">
+                Share useful notes, tutorials, and documentation with the group.
+              </p>
+            </div>
+            <button
+              onClick={() => { setEditingResource(null); setShowResourceForm(!showResourceForm); }}
+              className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none"
+            >
+              {showResourceForm ? 'Cancel' : '+ Add Resource'}
+            </button>
+          </div>
+
+          {/* Resource form (inline) */}
+          {showResourceForm && (
+            <div className="px-4 py-5 sm:p-6 border-b border-gray-200 bg-gray-50">
+              <h5 className="text-sm font-semibold text-gray-800 mb-4">
+                {editingResource ? 'Edit Resource' : 'Share New Resource'}
+              </h5>
+              {resourceError && (
+                <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-3">
+                  <p className="text-sm text-red-700">{resourceError}</p>
+                </div>
+              )}
+              <ResourceForm
+                initialData={editingResource}
+                onSubmit={handleResourceSubmit}
+                onCancel={() => { setShowResourceForm(false); setEditingResource(null); setResourceError(''); }}
+                isSubmitting={resourceSubmitting}
+              />
+            </div>
+          )}
+
+          {/* Resource list */}
+          <div className="px-4 py-5 sm:p-6">
+            {resourcesLoading ? (
+              <div className="flex justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+              </div>
+            ) : resourceError && resources.length === 0 ? (
+              <div className="bg-red-50 border-l-4 border-red-500 p-3">
+                <p className="text-sm text-red-700">{resourceError}</p>
+              </div>
+            ) : resources.length > 0 ? (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {resources.map((resource) => (
+                  <ResourceCard
+                    key={resource._id}
+                    resource={resource}
+                    isCreator={resource.createdBy?._id === user?._id}
+                    isAdmin={isAdmin}
+                    onEdit={handleEditResource}
+                    onDelete={handleDeleteResource}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10">
+                <svg className="mx-auto h-10 w-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <p className="mt-2 text-sm text-gray-500">No resources shared yet.</p>
+                <p className="text-xs text-gray-400">Be the first to share something useful!</p>
               </div>
             )}
           </div>

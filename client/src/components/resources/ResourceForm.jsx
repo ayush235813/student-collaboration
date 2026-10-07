@@ -1,0 +1,120 @@
+import { useState } from 'react';
+
+const CATEGORIES = ['Notes', 'Tutorial', 'Documentation', 'Video', 'Article', 'Other'];
+
+const ResourceForm = ({ initialData = null, onSubmit, onCancel, isSubmitting }) => {
+  const isEdit = !!initialData;
+
+  const [formData, setFormData] = useState({
+    title: initialData?.title || '',
+    description: initialData?.description || '',
+    resourceUrl: initialData?.resourceUrl || '',
+    category: initialData?.category || 'Other'
+  });
+
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError('');
+    
+    if (!formData.title.trim() || !formData.description.trim() || !formData.resourceUrl.trim()) {
+      setError('Title, description, and URL are required.');
+      return;
+    }
+
+    const urlPattern = /^https?:\/\/.+/;
+    if (!urlPattern.test(formData.resourceUrl.trim())) {
+      setError('Please provide a valid URL starting with http:// or https://');
+      return;
+    }
+
+    onSubmit(formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <div className="bg-red-50 border-l-4 border-red-500 p-3 mb-4">
+          <p className="text-sm text-red-700">{error}</p>
+        </div>
+      )}
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Resource Title *</label>
+        <input
+          type="text"
+          name="title"
+          required
+          value={formData.title}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+          placeholder="e.g., React Lifecycle Hooks Guide"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">URL / Link *</label>
+        <input
+          type="url"
+          name="resourceUrl"
+          required
+          value={formData.resourceUrl}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+          placeholder="https://example.com/guide"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Category *</label>
+        <select
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+        >
+          {CATEGORIES.map((cat) => (
+            <option key={cat} value={cat}>{cat}</option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Description *</label>
+        <textarea
+          name="description"
+          required
+          rows="3"
+          value={formData.description}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+          placeholder="Brief description of what this resource covers..."
+        />
+      </div>
+
+      <div className="flex justify-end gap-3 pt-2">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none disabled:bg-primary-400"
+        >
+          {isSubmitting ? 'Saving...' : isEdit ? 'Save Changes' : 'Share Resource'}
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default ResourceForm;

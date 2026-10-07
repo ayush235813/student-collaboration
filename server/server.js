@@ -49,6 +49,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/groups', require('./routes/groupRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
+app.use('/api/resources', require('./routes/resourceRoutes'));
 
 // --------------- Error Handler ---------------
 // Must be AFTER all routes
