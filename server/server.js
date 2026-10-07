@@ -48,6 +48,7 @@ app.get('/api/test', (req, res) => {
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/groups', require('./routes/groupRoutes'));
+app.use('/api/tasks', require('./routes/taskRoutes'));
 
 // --------------- Error Handler ---------------
 // Must be AFTER all routes
