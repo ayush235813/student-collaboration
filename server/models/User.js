@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
   skills: [{ type: String }],
   interests: [{ type: String }],
   bio: { type: String, default: "", maxlength: 500 },
+  githubUrl: { type: String, default: "", match: [/^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_.-]+\/?$/, 'Please provide a valid GitHub URL'] },
+  linkedinUrl: { type: String, default: "", match: [/^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/, 'Please provide a valid LinkedIn URL'] },
   profilePicture: { type: String, default: "" },
   isOnline: { type: Boolean, default: false },
   lastSeen: { type: Date }

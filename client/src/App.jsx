@@ -13,6 +13,7 @@ import GroupDetailPage from './pages/GroupDetailPage';
 import DiscussionDetailPage from './pages/DiscussionDetailPage';
 import SearchPage from './pages/SearchPage';
 import NotificationsPage from './pages/NotificationsPage';
+import PublicProfilePage from './pages/PublicProfilePage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<DashboardPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/profile/:userId" element={<PublicProfilePage />} />
                 <Route path="/groups" element={<GroupsPage />} />
                 <Route path="/groups/:id" element={<GroupDetailPage />} />
                 <Route path="/groups/:id/discussions/:discussionId" element={<DiscussionDetailPage />} />

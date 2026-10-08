@@ -13,6 +13,8 @@ const ProfilePage = () => {
     bio: user?.bio || '',
     skills: user?.skills?.join(', ') || '',
     interests: user?.interests?.join(', ') || '',
+    githubUrl: user?.githubUrl || '',
+    linkedinUrl: user?.linkedinUrl || '',
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -143,6 +145,14 @@ const ProfilePage = () => {
                   <label className="block text-sm font-medium text-gray-700">Interests (comma separated)</label>
                   <input type="text" name="interests" value={formData.interests} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="Machine Learning, Open Source" />
                 </div>
+                <div className="sm:col-span-1">
+                  <label className="block text-sm font-medium text-gray-700">GitHub URL</label>
+                  <input type="url" name="githubUrl" value={formData.githubUrl} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="https://github.com/username" />
+                </div>
+                <div className="sm:col-span-1">
+                  <label className="block text-sm font-medium text-gray-700">LinkedIn URL</label>
+                  <input type="url" name="linkedinUrl" value={formData.linkedinUrl} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="https://linkedin.com/in/username" />
+                </div>
               </div>
               <div className="flex justify-end">
                 <button type="submit" disabled={isSubmitting} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none disabled:bg-primary-400">
@@ -191,6 +201,26 @@ const ProfilePage = () => {
                         ))}
                       </div>
                     ) : 'No interests added'}
+                  </dd>
+                </div>
+                <div className="sm:col-span-1">
+                  <dt className="text-sm font-medium text-gray-500">GitHub</dt>
+                  <dd className="mt-1 text-sm text-gray-900">
+                    {user.githubUrl ? (
+                      <a href={user.githubUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">
+                        {user.githubUrl}
+                      </a>
+                    ) : 'Not specified'}
+                  </dd>
+                </div>
+                <div className="sm:col-span-1">
+                  <dt className="text-sm font-medium text-gray-500">LinkedIn</dt>
+                  <dd className="mt-1 text-sm text-gray-900">
+                    {user.linkedinUrl ? (
+                      <a href={user.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">
+                        {user.linkedinUrl}
+                      </a>
+                    ) : 'Not specified'}
                   </dd>
                 </div>
               </dl>

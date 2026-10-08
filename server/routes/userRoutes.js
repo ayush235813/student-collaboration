@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getUserProfile, updateUserProfile, uploadProfilePicture } = require('../controllers/userController');
+const { getUserProfile, updateUserProfile, uploadProfilePicture, getPublicProfile } = require('../controllers/userController');
 const { protect } = require('../middleware/auth');
 const upload = require('../middleware/upload'); // Cloudinary upload middleware
 
@@ -14,5 +14,8 @@ router.route('/profile')
 
 // Profile picture upload
 router.put('/profile-picture', upload.single('image'), uploadProfilePicture);
+
+// Public profile
+router.get('/:id', getPublicProfile);
 
 module.exports = router;
