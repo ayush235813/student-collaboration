@@ -31,6 +31,9 @@ const Navbar = () => {
                 <Link to="/groups" className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium">
                   Groups
                 </Link>
+                <Link to="/search" className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium">
+                  Search
+                </Link>
                 <Link to="/profile" className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium">
                   {user.profilePicture ? (
                     <img src={user.profilePicture} alt="Profile" className="h-8 w-8 rounded-full object-cover" />
