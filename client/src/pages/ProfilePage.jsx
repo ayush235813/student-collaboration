@@ -89,7 +89,7 @@ const ProfilePage = () => {
                 <button
                   type="button"
                   onClick={() => setIsEditing(!isEditing)}
-                  className="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+                  className="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none transition-colors"
                 >
                   {isEditing ? 'Cancel' : 'Edit Profile'}
                 </button>
@@ -119,43 +119,43 @@ const ProfilePage = () => {
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Full Name</label>
-                  <input type="text" name="name" required value={formData.name} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" />
+                  <input type="text" name="name" required value={formData.name} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">College / University</label>
-                  <input type="text" name="college" value={formData.college} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" />
+                  <input type="text" name="college" value={formData.college} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Course / Branch</label>
-                  <input type="text" name="course" value={formData.course} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" />
+                  <input type="text" name="course" value={formData.course} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Semester</label>
-                  <input type="number" name="semester" min="1" max="10" value={formData.semester} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" />
+                  <input type="number" name="semester" min="1" max="10" value={formData.semester} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition" />
                 </div>
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700">Bio</label>
-                  <textarea name="bio" rows="3" value={formData.bio} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="Tell us about yourself..."></textarea>
+                  <textarea name="bio" rows="3" value={formData.bio} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition" placeholder="Tell us about yourself..."></textarea>
                 </div>
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700">Skills (comma separated)</label>
-                  <input type="text" name="skills" value={formData.skills} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="React, Python, Figma" />
+                  <input type="text" name="skills" value={formData.skills} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition" placeholder="React, Python, Figma" />
                 </div>
                 <div className="sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700">Interests (comma separated)</label>
-                  <input type="text" name="interests" value={formData.interests} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="Machine Learning, Open Source" />
+                  <input type="text" name="interests" value={formData.interests} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition" placeholder="Machine Learning, Open Source" />
                 </div>
                 <div className="sm:col-span-1">
                   <label className="block text-sm font-medium text-gray-700">GitHub URL</label>
-                  <input type="url" name="githubUrl" value={formData.githubUrl} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="https://github.com/username" />
+                  <input type="url" name="githubUrl" value={formData.githubUrl} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition" placeholder="https://github.com/username" />
                 </div>
                 <div className="sm:col-span-1">
                   <label className="block text-sm font-medium text-gray-700">LinkedIn URL</label>
-                  <input type="url" name="linkedinUrl" value={formData.linkedinUrl} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="https://linkedin.com/in/username" />
+                  <input type="url" name="linkedinUrl" value={formData.linkedinUrl} onChange={handleChange} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition" placeholder="https://linkedin.com/in/username" />
                 </div>
               </div>
               <div className="flex justify-end">
-                <button type="submit" disabled={isSubmitting} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none disabled:bg-primary-400">
+                <button type="submit" disabled={isSubmitting} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none disabled:bg-primary-400 transition-colors">
                   {isSubmitting ? 'Saving...' : 'Save Profile'}
                 </button>
               </div>
@@ -207,7 +207,7 @@ const ProfilePage = () => {
                   <dt className="text-sm font-medium text-gray-500">GitHub</dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     {user.githubUrl ? (
-                      <a href={user.githubUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">
+                      <a href={user.githubUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline transition-colors">
                         {user.githubUrl}
                       </a>
                     ) : 'Not specified'}
@@ -217,7 +217,7 @@ const ProfilePage = () => {
                   <dt className="text-sm font-medium text-gray-500">LinkedIn</dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     {user.linkedinUrl ? (
-                      <a href={user.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">
+                      <a href={user.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline transition-colors">
                         {user.linkedinUrl}
                       </a>
                     ) : 'Not specified'}

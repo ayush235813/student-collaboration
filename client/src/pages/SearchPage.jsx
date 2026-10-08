@@ -66,18 +66,20 @@ const SearchPage = () => {
           <div className="flex-1">
             <input
               type="text"
+              aria-label="Search query"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Search groups, resources, discussions..."
-              className="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              className="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 transition"
             />
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 sm:w-auto w-full">
             <select
+              aria-label="Filter by type"
               value={type}
               onChange={(e) => handleTypeChange(e.target.value)}
-              className="border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              className="border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 transition"
             >
               <option value="all">All Results</option>
               <option value="groups">Groups</option>
@@ -87,9 +89,10 @@ const SearchPage = () => {
 
             {type === 'resources' && (
               <select
+                aria-label="Sort results"
                 value={category}
                 onChange={(e) => setSearchParams({ q: query, type, category: e.target.value })}
-                className="border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                className="border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 transition"
               >
                 <option value="">All Categories</option>
                 <option value="Notes">Notes</option>

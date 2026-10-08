@@ -31,13 +31,13 @@ const DiscussionCard = ({ discussion, isCreator, isAdmin, onOpen, onEdit, onDele
           <div className="flex space-x-2" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => onEdit(discussion)}
-              className="px-2 py-1 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 focus:outline-none text-xs font-medium"
+              className="px-2 py-1 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors text-xs font-medium"
             >
               Edit
             </button>
             <button
               onClick={() => onDelete(discussion._id)}
-              className="px-2 py-1 border border-transparent rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none text-xs font-medium"
+              className="px-2 py-1 border border-transparent rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors text-xs font-medium"
             >
               Delete
             </button>

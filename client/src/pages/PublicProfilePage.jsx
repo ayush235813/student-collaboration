@@ -56,7 +56,7 @@ const PublicProfilePage = () => {
     <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
       {isOwnProfile && (
         <div className="mb-4 flex justify-end">
-          <Link to="/profile" className="text-sm font-medium text-primary-600 hover:text-primary-800">
+          <Link to="/profile" className="text-sm font-medium text-primary-600 hover:text-primary-800 transition-colors">
             Edit My Profile &rarr;
           </Link>
         </div>
@@ -124,12 +124,12 @@ const PublicProfilePage = () => {
               {(profile.githubUrl || profile.linkedinUrl) && (
                 <div className="sm:col-span-2 flex space-x-6">
                   {profile.githubUrl && (
-                    <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline flex items-center text-sm font-medium">
+                    <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline flex items-center text-sm font-medium transition-colors">
                       GitHub
                     </a>
                   )}
                   {profile.linkedinUrl && (
-                    <a href={profile.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline flex items-center text-sm font-medium">
+                    <a href={profile.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline flex items-center text-sm font-medium transition-colors">
                       LinkedIn
                     </a>
                   )}
@@ -147,19 +147,19 @@ const PublicProfilePage = () => {
           </div>
           <div className="p-4 sm:p-6">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center mb-8">
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="text-2xl font-bold text-primary-600">{stats.sharedGroups?.length || 0}</div>
                 <div className="text-xs text-gray-500 mt-1 uppercase tracking-wide">Shared Groups</div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="text-2xl font-bold text-green-600">{stats.tasksCompleted || 0}</div>
                 <div className="text-xs text-gray-500 mt-1 uppercase tracking-wide">Tasks Completed</div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="text-2xl font-bold text-blue-600">{stats.resourcesShared || 0}</div>
                 <div className="text-xs text-gray-500 mt-1 uppercase tracking-wide">Resources Shared</div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
                 <div className="text-2xl font-bold text-purple-600">{stats.discussionsCreated || 0}</div>
                 <div className="text-xs text-gray-500 mt-1 uppercase tracking-wide">Discussions</div>
               </div>
@@ -172,7 +172,7 @@ const PublicProfilePage = () => {
                   {stats.sharedGroups.map(group => (
                     <li key={group._id} className="py-3 flex justify-between items-center">
                       <div>
-                        <Link to={`/groups/${group._id}`} className="text-sm font-medium text-primary-600 hover:underline">
+                        <Link to={`/groups/${group._id}`} className="text-sm font-medium text-primary-600 hover:underline transition-colors">
                           {group.name}
                         </Link>
                         <p className="text-xs text-gray-500 truncate mt-1 max-w-sm">{group.description}</p>

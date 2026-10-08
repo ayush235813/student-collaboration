@@ -135,7 +135,7 @@ const DiscussionDetailPage = () => {
         <div className="bg-red-50 border-l-4 border-red-500 p-4">
           <p className="text-sm text-red-700">{error}</p>
         </div>
-        <button onClick={() => navigate(`/groups/${id}`)} className="mt-4 text-sm text-primary-600 hover:text-primary-500">
+        <button onClick={() => navigate(`/groups/${id}`)} className="mt-4 text-sm text-primary-600 hover:text-primary-500 transition-colors">
           &larr; Back to group
         </button>
       </div>
@@ -145,7 +145,7 @@ const DiscussionDetailPage = () => {
   return (
     <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-6">
       {/* Back link */}
-      <button onClick={() => navigate(`/groups/${id}`)} className="text-sm text-primary-600 hover:text-primary-500 font-medium">
+      <button onClick={() => navigate(`/groups/${id}`)} className="text-sm text-primary-600 hover:text-primary-500 font-medium transition-colors">
         &larr; Back to group
       </button>
 
@@ -166,7 +166,7 @@ const DiscussionDetailPage = () => {
                   type="text"
                   value={editData.title}
                   onChange={(e) => setEditData({ ...editData, title: e.target.value })}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 transition"
                 />
               </div>
               <div>
@@ -175,12 +175,12 @@ const DiscussionDetailPage = () => {
                   value={editData.content}
                   onChange={(e) => setEditData({ ...editData, content: e.target.value })}
                   rows="5"
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 transition"
                 />
               </div>
               <div className="flex justify-end gap-3">
-                <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">Cancel</button>
-                <button type="submit" disabled={editSubmitting} className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400">
+                <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors">Cancel</button>
+                <button type="submit" disabled={editSubmitting} className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 transition-colors">
                   {editSubmitting ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
@@ -191,8 +191,8 @@ const DiscussionDetailPage = () => {
                 <h2 className="text-2xl font-bold text-gray-900">{discussion.title}</h2>
                 {isCreator && (
                   <div className="flex space-x-2 shrink-0 ml-4">
-                    <button onClick={() => setIsEditing(true)} className="px-3 py-1.5 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 text-xs font-medium">Edit</button>
-                    <button onClick={handleDeleteDiscussion} className="px-3 py-1.5 border border-transparent rounded text-white bg-red-600 hover:bg-red-700 text-xs font-medium">Delete</button>
+                    <button onClick={() => setIsEditing(true)} className="px-3 py-1.5 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 text-xs font-medium transition-colors">Edit</button>
+                    <button onClick={handleDeleteDiscussion} className="px-3 py-1.5 border border-transparent rounded text-white bg-red-600 hover:bg-red-700 text-xs font-medium transition-colors">Delete</button>
                   </div>
                 )}
               </div>

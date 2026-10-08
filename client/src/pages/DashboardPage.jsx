@@ -111,7 +111,7 @@ const DashboardPage = () => {
             )}
           </div>
           <div className="bg-gray-50 px-4 py-4 sm:px-6 border-t border-gray-200">
-            <Link to="/groups" className="text-sm font-medium text-primary-600 hover:text-primary-500">
+            <Link to="/groups" className="text-sm font-medium text-primary-600 hover:text-primary-500 transition-colors">
               View all groups &rarr;
             </Link>
           </div>

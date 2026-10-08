@@ -51,7 +51,7 @@ const ResourceCard = ({ resource, isCreator, isAdmin, onEdit, onDelete }) => {
             href={safeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 inline-flex justify-center items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none"
+            className="flex-1 inline-flex justify-center items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none transition-colors"
           >
             <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
             Open Resource
@@ -61,14 +61,14 @@ const ResourceCard = ({ resource, isCreator, isAdmin, onEdit, onDelete }) => {
             <div className="flex shrink-0 space-x-2">
               <button
                 onClick={() => onEdit(resource)}
-                className="px-2 py-1.5 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 focus:outline-none text-xs font-medium"
+                className="px-2 py-1.5 border border-gray-300 rounded text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors text-xs font-medium"
                 title="Edit"
               >
                 Edit
               </button>
               <button
                 onClick={() => onDelete(resource._id)}
-                className="px-2 py-1.5 border border-transparent rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none text-xs font-medium"
+                className="px-2 py-1.5 border border-transparent rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors text-xs font-medium"
                 title="Delete"
               >
                 Delete

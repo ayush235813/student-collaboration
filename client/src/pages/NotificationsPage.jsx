@@ -85,7 +85,7 @@ const NotificationsPage = () => {
         {notifications.some(n => !n.isRead) && (
           <button 
             onClick={handleMarkAllAsRead}
-            className="text-sm font-medium text-primary-600 hover:text-primary-800"
+            className="text-sm font-medium text-primary-600 hover:text-primary-800 transition-colors"
           >
             Mark all as read
           </button>
@@ -137,8 +137,9 @@ const NotificationsPage = () => {
                     )}
                     <button 
                       onClick={(e) => handleDelete(notification._id, e)}
-                      className="text-gray-400 hover:text-red-500 transition-colors"
+                      className="text-gray-400 hover:text-red-500 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 rounded"
                       title="Delete"
+                      aria-label="Delete notification"
                     >
                       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

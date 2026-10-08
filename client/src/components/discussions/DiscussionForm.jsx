@@ -42,7 +42,7 @@ const DiscussionForm = ({ initialData = null, onSubmit, onCancel, isSubmitting }
           required
           value={formData.title}
           onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 transition"
           placeholder="e.g., How to implement JWT authentication?"
         />
       </div>
@@ -55,7 +55,7 @@ const DiscussionForm = ({ initialData = null, onSubmit, onCancel, isSubmitting }
           rows="5"
           value={formData.content}
           onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 transition"
           placeholder="Describe your question, idea, or topic for discussion..."
         />
       </div>
@@ -64,14 +64,14 @@ const DiscussionForm = ({ initialData = null, onSubmit, onCancel, isSubmitting }
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+          className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none disabled:bg-primary-400"
+          className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none disabled:bg-primary-400 transition-colors"
         >
           {isSubmitting ? 'Saving...' : isEdit ? 'Save Changes' : 'Post Discussion'}
         </button>
