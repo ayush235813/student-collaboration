@@ -53,6 +53,7 @@ app.use('/api/resources', require('./routes/resourceRoutes'));
 app.use('/api/discussions', require('./routes/discussionRoutes'));
 app.use('/api/comments', require('./routes/commentRoutes'));
 app.use('/api/search', require('./routes/searchRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 
 // --------------- Error Handler ---------------
 // Must be AFTER all routes

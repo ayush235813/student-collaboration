@@ -173,6 +173,17 @@ const joinGroup = async (req, res, next) => {
 
     await group.save();
 
+    // PHASE 8: Notification for Admin
+    if (group.admin.toString() !== req.user._id.toString()) {
+      const Notification = require('../models/Notification');
+      await Notification.create({
+        recipient: group.admin,
+        type: 'GROUP_JOIN',
+        message: `${req.user.name || 'A user'} joined your group: ${group.name}`,
+        relatedGroup: group._id
+      });
+    }
+
     res.json({
       success: true,
       message: 'Successfully joined the group',

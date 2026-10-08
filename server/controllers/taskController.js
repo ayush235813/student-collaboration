@@ -52,6 +52,18 @@ const createTask = async (req, res, next) => {
     await task.populate('assignedTo', 'name email profilePicture');
     await task.populate('createdBy', 'name email');
 
+    // PHASE 8: Notify assignee
+    if (assignedTo && assignedTo.toString() !== req.user._id.toString()) {
+      const Notification = require('../models/Notification');
+      await Notification.create({
+        recipient: assignedTo,
+        type: 'TASK_ASSIGNED',
+        message: `You were assigned a new task: ${task.title}`,
+        relatedTask: task._id,
+        relatedGroup: groupId
+      });
+    }
+
     res.status(201).json({ success: true, task });
   } catch (error) {
     next(error);
@@ -131,6 +143,8 @@ const updateTask = async (req, res, next) => {
       return next(new ApiError(403, 'You must be a member of this group to update tasks'));
     }
 
+    const oldAssignedTo = task.assignedTo?.toString();
+
     if (admin) {
       // Admin can update all fields
       if (req.body.title) task.title = req.body.title;
@@ -158,6 +172,20 @@ const updateTask = async (req, res, next) => {
     const updatedTask = await task.save();
     await updatedTask.populate('assignedTo', 'name email profilePicture');
     await updatedTask.populate('createdBy', 'name email');
+
+    // PHASE 8: Notify if assigned to someone new
+    if (admin && req.body.assignedTo && req.body.assignedTo !== oldAssignedTo) {
+      if (req.body.assignedTo.toString() !== req.user._id.toString()) {
+        const Notification = require('../models/Notification');
+        await Notification.create({
+          recipient: req.body.assignedTo,
+          type: 'TASK_ASSIGNED',
+          message: `You were assigned a task: ${updatedTask.title}`,
+          relatedTask: updatedTask._id,
+          relatedGroup: group._id
+        });
+      }
+    }
 
     res.json({ success: true, task: updatedTask });
   } catch (error) {

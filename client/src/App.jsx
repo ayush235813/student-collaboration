@@ -12,6 +12,7 @@ import GroupsPage from './pages/GroupsPage';
 import GroupDetailPage from './pages/GroupDetailPage';
 import DiscussionDetailPage from './pages/DiscussionDetailPage';
 import SearchPage from './pages/SearchPage';
+import NotificationsPage from './pages/NotificationsPage';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/groups/:id" element={<GroupDetailPage />} />
                 <Route path="/groups/:id/discussions/:discussionId" element={<DiscussionDetailPage />} />
                 <Route path="/search" element={<SearchPage />} />
+                <Route path="/notifications" element={<NotificationsPage />} />
               </Route>
             </Routes>
           </main>

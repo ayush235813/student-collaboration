@@ -40,6 +40,22 @@ const createDiscussion = async (req, res, next) => {
 
     await discussion.populate('createdBy', 'name profilePicture email');
 
+    // PHASE 8: Notify group members
+    const Notification = require('../models/Notification');
+    const notificationDocs = group.members
+      .filter(m => m.user.toString() !== req.user._id.toString())
+      .map(m => ({
+        recipient: m.user,
+        type: 'DISCUSSION_CREATED',
+        message: `${req.user.name || 'A member'} started a new discussion: ${title}`,
+        relatedGroup: group._id,
+        relatedDiscussion: discussion._id
+      }));
+
+    if (notificationDocs.length > 0) {
+      await Notification.insertMany(notificationDocs);
+    }
+
     res.status(201).json({ success: true, discussion });
   } catch (error) {
     next(error);

@@ -42,6 +42,19 @@ const createComment = async (req, res, next) => {
 
     await comment.populate('createdBy', 'name profilePicture email');
 
+    // PHASE 8: Notify discussion creator
+    if (discussion.createdBy.toString() !== req.user._id.toString()) {
+      const Notification = require('../models/Notification');
+      await Notification.create({
+        recipient: discussion.createdBy,
+        type: 'COMMENT_ADDED',
+        message: `${req.user.name || 'Someone'} commented on your discussion: ${discussion.title}`,
+        relatedGroup: group._id,
+        relatedDiscussion: discussion._id,
+        relatedComment: comment._id
+      });
+    }
+
     res.status(201).json({ success: true, comment });
   } catch (error) {
     next(error);

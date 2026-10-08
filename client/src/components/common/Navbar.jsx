@@ -1,9 +1,20 @@
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { getUnreadCount } from '../../api/notificationApi';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    if (user) {
+      getUnreadCount()
+        .then(data => setUnreadCount(data.count))
+        .catch(err => console.error(err));
+    }
+  }, [user]);
 
   const handleLogout = () => {
     logout();
@@ -33,6 +44,14 @@ const Navbar = () => {
                 </Link>
                 <Link to="/search" className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium">
                   Search
+                </Link>
+                <Link to="/notifications" className="relative text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium">
+                  <span className="text-xl">🔔</span>
+                  {unreadCount > 0 && (
+                    <span className="absolute top-1 right-2 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                      {unreadCount}
+                    </span>
+                  )}
                 </Link>
                 <Link to="/profile" className="flex items-center space-x-2 text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium">
                   {user.profilePicture ? (
