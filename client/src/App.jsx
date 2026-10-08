@@ -10,6 +10,7 @@ import DashboardPage from './pages/DashboardPage';
 import ProfilePage from './pages/ProfilePage';
 import GroupsPage from './pages/GroupsPage';
 import GroupDetailPage from './pages/GroupDetailPage';
+import DiscussionDetailPage from './pages/DiscussionDetailPage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/groups" element={<GroupsPage />} />
                 <Route path="/groups/:id" element={<GroupDetailPage />} />
+                <Route path="/groups/:id/discussions/:discussionId" element={<DiscussionDetailPage />} />
               </Route>
             </Routes>
           </main>

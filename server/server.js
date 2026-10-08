@@ -50,6 +50,8 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/groups', require('./routes/groupRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/resources', require('./routes/resourceRoutes'));
+app.use('/api/discussions', require('./routes/discussionRoutes'));
+app.use('/api/comments', require('./routes/commentRoutes'));
 
 // --------------- Error Handler ---------------
 // Must be AFTER all routes

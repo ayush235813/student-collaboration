@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getGroupById, joinGroup, leaveGroup, updateGroup, deleteGroup } from '../api/groupApi';
 import { getGroupTasks, createTask, updateTask, deleteTask } from '../api/taskApi';
 import { getGroupResources, createResource, updateResource, deleteResource } from '../api/resourceApi';
+import { getGroupDiscussions, createDiscussion, updateDiscussion, deleteDiscussion } from '../api/discussionApi';
 import useAuth from '../hooks/useAuth';
 import TaskCard from '../components/tasks/TaskCard';
 import TaskForm from '../components/tasks/TaskForm';
 import ResourceCard from '../components/resources/ResourceCard';
 import ResourceForm from '../components/resources/ResourceForm';
+import DiscussionCard from '../components/discussions/DiscussionCard';
+import DiscussionForm from '../components/discussions/DiscussionForm';
 
 const GroupDetailPage = () => {
   const { id } = useParams();
@@ -39,6 +42,14 @@ const GroupDetailPage = () => {
   const [showResourceForm, setShowResourceForm] = useState(false);
   const [editingResource, setEditingResource] = useState(null);
   const [resourceSubmitting, setResourceSubmitting] = useState(false);
+
+  // Discussion state
+  const [discussions, setDiscussions] = useState([]);
+  const [discussionsLoading, setDiscussionsLoading] = useState(false);
+  const [discussionError, setDiscussionError] = useState('');
+  const [showDiscussionForm, setShowDiscussionForm] = useState(false);
+  const [editingDiscussion, setEditingDiscussion] = useState(null);
+  const [discussionSubmitting, setDiscussionSubmitting] = useState(false);
 
   const fetchGroup = async () => {
     try {
@@ -80,6 +91,19 @@ const GroupDetailPage = () => {
     }
   };
 
+  const fetchDiscussions = async () => {
+    try {
+      setDiscussionsLoading(true);
+      const data = await getGroupDiscussions(id);
+      setDiscussions(data.discussions);
+      setDiscussionError('');
+    } catch (err) {
+      if (err.response?.status !== 403) setDiscussionError(err.response?.data?.message || 'Failed to fetch discussions.');
+    } finally {
+      setDiscussionsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchGroup();
   }, [id]);
@@ -88,6 +112,7 @@ const GroupDetailPage = () => {
     if (group) {
       fetchTasks();
       fetchResources();
+      fetchDiscussions();
     }
   }, [group]);
 
@@ -237,6 +262,48 @@ const GroupDetailPage = () => {
     } catch (err) {
       setResourceError(err.response?.data?.message || 'Failed to delete resource.');
     }
+  };
+
+  // ---- Discussion Actions ----
+  const handleDiscussionSubmit = async (formData) => {
+    try {
+      setDiscussionSubmitting(true);
+      setDiscussionError('');
+      if (editingDiscussion) {
+        await updateDiscussion(editingDiscussion._id, formData);
+        setSuccessMessage('Discussion updated successfully.');
+      } else {
+        await createDiscussion({ ...formData, groupId: id });
+        setSuccessMessage('Discussion posted successfully.');
+      }
+      setShowDiscussionForm(false);
+      setEditingDiscussion(null);
+      fetchDiscussions();
+    } catch (err) {
+      setDiscussionError(err.response?.data?.message || 'Failed to save discussion.');
+    } finally {
+      setDiscussionSubmitting(false);
+    }
+  };
+
+  const handleEditDiscussion = (discussion) => {
+    setEditingDiscussion(discussion);
+    setShowDiscussionForm(true);
+  };
+
+  const handleDeleteDiscussion = async (discussionId) => {
+    if (!window.confirm('Are you sure you want to delete this discussion?')) return;
+    try {
+      await deleteDiscussion(discussionId);
+      setDiscussions((prev) => prev.filter((d) => d._id !== discussionId));
+      setSuccessMessage('Discussion deleted.');
+    } catch (err) {
+      setDiscussionError(err.response?.data?.message || 'Failed to delete discussion.');
+    }
+  };
+
+  const handleOpenDiscussion = (discussion) => {
+    navigate(`/groups/${id}/discussions/${discussion._id}`);
   };
 
   // ---- Render ----
@@ -536,6 +603,85 @@ const GroupDetailPage = () => {
                 </svg>
                 <p className="mt-2 text-sm text-gray-500">No resources shared yet.</p>
                 <p className="text-xs text-gray-400">Be the first to share something useful!</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {/* ---- Discussions Section (only for members) ---- */}
+      {isMember && (
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg mt-8">
+          <div className="px-4 py-5 sm:px-6 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h4 className="text-lg font-medium text-gray-900">
+                Discussions
+                <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                  {discussions.length}
+                </span>
+              </h4>
+              <p className="text-xs text-gray-500 mt-1">
+                Ask questions and discuss topics with your group members.
+              </p>
+            </div>
+            <button
+              onClick={() => { setEditingDiscussion(null); setShowDiscussionForm(!showDiscussionForm); }}
+              className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none"
+            >
+              {showDiscussionForm ? 'Cancel' : '+ New Discussion'}
+            </button>
+          </div>
+
+          {/* Discussion form (inline) */}
+          {showDiscussionForm && (
+            <div className="px-4 py-5 sm:p-6 border-b border-gray-200 bg-gray-50">
+              <h5 className="text-sm font-semibold text-gray-800 mb-4">
+                {editingDiscussion ? 'Edit Discussion' : 'Start a Discussion'}
+              </h5>
+              {discussionError && (
+                <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-3">
+                  <p className="text-sm text-red-700">{discussionError}</p>
+                </div>
+              )}
+              <DiscussionForm
+                initialData={editingDiscussion}
+                onSubmit={handleDiscussionSubmit}
+                onCancel={() => { setShowDiscussionForm(false); setEditingDiscussion(null); setDiscussionError(''); }}
+                isSubmitting={discussionSubmitting}
+              />
+            </div>
+          )}
+
+          {/* Discussion list */}
+          <div className="px-4 py-5 sm:p-6">
+            {discussionsLoading ? (
+              <div className="flex justify-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+              </div>
+            ) : discussionError && discussions.length === 0 ? (
+              <div className="bg-red-50 border-l-4 border-red-500 p-3">
+                <p className="text-sm text-red-700">{discussionError}</p>
+              </div>
+            ) : discussions.length > 0 ? (
+              <div className="space-y-4">
+                {discussions.map((discussion) => (
+                  <DiscussionCard
+                    key={discussion._id}
+                    discussion={discussion}
+                    isCreator={discussion.createdBy?._id === user?._id}
+                    isAdmin={isAdmin}
+                    onOpen={handleOpenDiscussion}
+                    onEdit={handleEditDiscussion}
+                    onDelete={handleDeleteDiscussion}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10">
+                <svg className="mx-auto h-10 w-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+                <p className="mt-2 text-sm text-gray-500">No discussions started yet.</p>
+                <p className="text-xs text-gray-400">Start the conversation!</p>
               </div>
             )}
           </div>
