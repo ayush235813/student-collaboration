@@ -8,7 +8,7 @@ const ApiError = require('../utils/apiError');
  */
 const getUserProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id).select('-password');
 
     if (user) {
       res.json({
@@ -30,7 +30,7 @@ const getUserProfile = async (req, res, next) => {
  */
 const updateUserProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id).select('-password');
 
     if (user) {
       // Update fields if they are provided
@@ -88,7 +88,7 @@ const uploadProfilePicture = async (req, res, next) => {
       return next(new ApiError(400, 'Please upload an image file'));
     }
 
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id).select('-password');
 
     if (user) {
       // The file path is provided by Cloudinary via multer-storage-cloudinary
