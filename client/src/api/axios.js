@@ -3,7 +3,7 @@ import axios from 'axios';
 // Create a configured Axios instance for all API calls
 // This ensures every request uses the same base URL and settings
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://student-collaboration-mmn4.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
